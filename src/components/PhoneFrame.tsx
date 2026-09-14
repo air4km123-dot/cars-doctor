@@ -3,6 +3,7 @@ import { BottomNavigation } from "./BottomNavigation";
 import { QuickAddSheet } from "./QuickAddSheet";
 import { VoiceInputModal } from "./VoiceInputModal";
 import { OCRModal } from "./OCRModal";
+import { ProfileMenu } from "./ProfileMenu";
 import { Toast } from "./Toast";
 
 export function PhoneFrame({ children }: { children: ReactNode }) {
@@ -20,6 +21,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         <QuickAddSheet />
         <VoiceInputModal />
         <OCRModal />
+        <ProfileMenu />
         <Toast />
       </div>
     </div>

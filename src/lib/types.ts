@@ -199,3 +199,12 @@ export interface DriverProfile {
   expireDate: string;
   photo?: string;
 }
+
+export interface AppUser {
+  name: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  memberSince: string;
+  plan: string;
+}

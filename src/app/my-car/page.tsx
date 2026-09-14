@@ -3,14 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCarData } from "@/lib/store";
+import { useUI } from "@/lib/uiStore";
 import { formatNumber, formatThaiDate } from "@/lib/utils";
 import { Card, Row, SectionHeader } from "@/components/ui";
 import { StatusBadge } from "@/components/Badge";
 import { Modal } from "@/components/Modal";
 import { FormField, PrimaryButton, SecondaryButton } from "@/components/FormField";
+import { IconMenu } from "@/components/icons";
 
 export default function MyCarPage() {
   const { vehicle, documents, health, completenessIndex, updateMileage } = useCarData();
+  const { openProfileMenu } = useUI();
   const dueSoonDocs = documents.filter((d) => d.status !== "active").length;
   const [editingMileage, setEditingMileage] = useState(false);
   const [mileageInput, setMileageInput] = useState(String(vehicle.mileage));
@@ -23,7 +26,12 @@ export default function MyCarPage() {
   return (
     <div className="pb-4">
       <div className="bg-navy px-4 pb-6 pt-[calc(env(safe-area-inset-top)+18px)] text-white">
-        <h1 className="text-[19px] font-bold">รถของฉัน</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-[19px] font-bold">รถของฉัน</h1>
+          <button aria-label="เมนู" onClick={openProfileMenu} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 active:bg-white/20">
+            <IconMenu />
+          </button>
+        </div>
         <div className="mt-4 rounded-2xl bg-white/10 p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-[26px]">🚗</div>

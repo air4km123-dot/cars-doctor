@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { useCarData } from "@/lib/store";
+import { useUI } from "@/lib/uiStore";
 import { fuelPriceToday, usefulTodayCards, driverProfile } from "@/lib/mockData";
 import { formatBaht, formatNumber, statusFromDays, TODAY } from "@/lib/utils";
 import { Card, HealthRing, SectionHeader } from "@/components/ui";
 import { StatusChip } from "@/components/StatusChip";
+import { IconMenu } from "@/components/icons";
 
 const STATUS_RANK = { urgent: 0, dueSoon: 1, warning: 2, healthy: 3 } as const;
 
 export default function HomePage() {
   const { vehicle, reminders, expenses, health } = useCarData();
+  const { openProfileMenu } = useUI();
 
   const upcoming = [...reminders]
     .sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status])
@@ -27,8 +30,15 @@ export default function HomePage() {
     <div className="pb-4">
       {/* Top */}
       <div className="bg-navy px-4 pb-6 pt-[calc(env(safe-area-inset-top)+18px)] text-white">
-        <p className="text-[12.5px] text-white/60">สวัสดี, {driverProfile.name.split(" ")[0]}</p>
-        <h1 className="mt-0.5 text-[19px] font-bold">Cars Doctor</h1>
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[12.5px] text-white/60">สวัสดี, {driverProfile.name.split(" ")[0]}</p>
+            <h1 className="mt-0.5 text-[19px] font-bold">Cars Doctor</h1>
+          </div>
+          <button aria-label="เมนู" onClick={openProfileMenu} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 active:bg-white/20">
+            <IconMenu />
+          </button>
+        </div>
 
         <Link
           href="/my-car"

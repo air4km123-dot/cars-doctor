@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { useCarData } from "@/lib/store";
+import { useUI } from "@/lib/uiStore";
 import { accidents, claims, initialFuelLogs } from "@/lib/mockData";
 import { formatNumber, formatThaiDate } from "@/lib/utils";
 import { Card, PillTab } from "@/components/ui";
+import { IconMenu } from "@/components/icons";
 
 type FilterType = "all" | "maintenance" | "fuel" | "expense" | "document" | "accident" | "claim";
 
@@ -29,6 +31,7 @@ const FILTERS: { key: FilterType; label: string }[] = [
 
 export default function HistoryPage() {
   const { maintenanceEvents, expenses, documents } = useCarData();
+  const { openProfileMenu } = useUI();
   const [filter, setFilter] = useState<FilterType>("all");
 
   const items = useMemo<HistoryItem[]>(() => {
@@ -92,8 +95,15 @@ export default function HistoryPage() {
   return (
     <div className="pb-4">
       <div className="bg-navy px-4 pb-6 pt-[calc(env(safe-area-inset-top)+18px)] text-white">
-        <h1 className="text-[19px] font-bold">ประวัติ</h1>
-        <p className="mt-0.5 text-[12.5px] text-white/60">ไทม์ไลน์รวมทุกกิจกรรมของรถคันนี้</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-[19px] font-bold">ประวัติ</h1>
+            <p className="mt-0.5 text-[12.5px] text-white/60">ไทม์ไลน์รวมทุกกิจกรรมของรถคันนี้</p>
+          </div>
+          <button aria-label="เมนู" onClick={openProfileMenu} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 active:bg-white/20">
+            <IconMenu />
+          </button>
+        </div>
       </div>
       <div className="px-4 pt-4">
         <div className="no-scrollbar -mx-4 mb-4 flex gap-2 overflow-x-auto px-4">

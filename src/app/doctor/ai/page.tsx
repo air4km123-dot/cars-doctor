@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useCarData } from "@/lib/store";
+import { useUI } from "@/lib/uiStore";
 import { CATEGORY_AI_PROMPT } from "@/lib/health";
 import { Card, Row, SectionHeader } from "@/components/ui";
 import { StatusChip } from "@/components/StatusChip";
 import { StatusBadge } from "@/components/Badge";
 import { FormField, PrimaryButton } from "@/components/FormField";
+import { IconMenu } from "@/components/icons";
 import type { TrackerKey } from "@/lib/types";
 
 type Severity = "low" | "medium" | "high" | "urgent";
@@ -84,6 +86,7 @@ const SEVERITY_LABEL: Record<Severity, string> = { low: "ต่ำ", medium: "�
 
 export default function AIDoctorBasicPage() {
   const { addSymptomRecord } = useCarData();
+  const { openProfileMenu } = useUI();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<{ q: string; d: Diagnosis } | null>(null);
   const [symptomTitle, setSymptomTitle] = useState("");
@@ -117,8 +120,15 @@ export default function AIDoctorBasicPage() {
   return (
     <div className="pb-4">
       <div className="bg-navy px-4 pb-6 pt-[calc(env(safe-area-inset-top)+18px)] text-white">
-        <h1 className="text-[19px] font-bold">AI หมอรถ</h1>
-        <p className="mt-0.5 text-[12.5px] text-white/60">ถามอาการ วินิจฉัยเบื้องต้น และบันทึกอาการรถได้ในที่เดียว</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-[19px] font-bold">AI หมอรถ</h1>
+            <p className="mt-0.5 text-[12.5px] text-white/60">ถามอาการ วินิจฉัยเบื้องต้น และบันทึกอาการรถได้ในที่เดียว</p>
+          </div>
+          <button aria-label="เมนู" onClick={openProfileMenu} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 active:bg-white/20">
+            <IconMenu />
+          </button>
+        </div>
       </div>
 
       <div className="space-y-4 px-4 pt-4">

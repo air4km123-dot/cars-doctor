@@ -397,6 +397,15 @@ export const driverProfile: DriverProfile = {
   expireDate: "2026-10-16",
 };
 
+export const initialAppUser = {
+  name: "กิตติ ยานยนต์เจริญ",
+  email: "kitti.y@example.com",
+  phone: "081-234-5678",
+  avatar: "🧑",
+  memberSince: "2022-03-15",
+  plan: "FREE",
+};
+
 export const financeRecord = {
   loanAmount: 900000,
   downPayment: 279000,

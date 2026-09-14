@@ -16,6 +16,10 @@ interface UIContextValue {
   openOcr: (target?: string) => void;
   closeOcr: () => void;
 
+  profileMenuOpen: boolean;
+  openProfileMenu: () => void;
+  closeProfileMenu: () => void;
+
   toast: string | null;
   showToast: (msg: string) => void;
 }
@@ -27,6 +31,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [ocrOpen, setOcrOpen] = useState(false);
   const [ocrTarget, setOcrTarget] = useState<string | null>(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   function showToast(msg: string) {
@@ -52,6 +57,9 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       setOcrOpen(true);
     },
     closeOcr: () => setOcrOpen(false),
+    profileMenuOpen,
+    openProfileMenu: () => setProfileMenuOpen(true),
+    closeProfileMenu: () => setProfileMenuOpen(false),
     toast,
     showToast,
   };

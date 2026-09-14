@@ -10,8 +10,10 @@ import {
   initialDocuments,
   initialPassportEvents,
   symptomRecords as initialSymptoms,
+  initialAppUser,
 } from "./mockData";
 import type {
+  AppUser,
   DocumentItem,
   Expense,
   MaintenanceEvent,
@@ -50,6 +52,7 @@ interface CarDataState {
   symptomRecords: SymptomRecord[];
   health: HealthResult;
   completenessIndex: number;
+  appUser: AppUser;
 }
 
 interface CarDataContextValue extends CarDataState {
@@ -60,6 +63,7 @@ interface CarDataContextValue extends CarDataState {
   updateMileage: (mileage: number) => void;
   addSymptomRecord: (title: string, severity: SymptomRecord["severity"], notes?: string) => void;
   addReminderCustom: (title: string, dueDate?: string, dueMileage?: number) => void;
+  updateAppUser: (patch: Partial<AppUser>) => void;
 }
 
 const CarDataContext = createContext<CarDataContextValue | null>(null);
@@ -87,6 +91,7 @@ export function CarDataProvider({ children }: { children: React.ReactNode }) {
   const [documents, setDocuments] = useState<DocumentItem[]>(initialDocuments);
   const [passportEvents, setPassportEvents] = useState<PassportEvent[]>(initialPassportEvents);
   const [symptoms, setSymptoms] = useState<SymptomRecord[]>(initialSymptoms);
+  const [appUser, setAppUser] = useState<AppUser>(initialAppUser);
 
   const health = useMemo(() => computeHealth(trackers, documents, vehicle.mileage), [trackers, documents, vehicle.mileage]);
   const completenessIndex = useMemo(
@@ -212,6 +217,10 @@ export function CarDataProvider({ children }: { children: React.ReactNode }) {
     setSymptoms((prev) => [{ id: nextId("s"), title, date: TODAY_ISO, severity, notes: notes ?? "" }, ...prev]);
   }
 
+  function updateAppUser(patch: Partial<AppUser>) {
+    setAppUser((prev) => ({ ...prev, ...patch }));
+  }
+
   function addReminderCustom(title: string, dueDate?: string, dueMileage?: number) {
     setReminders((prev) => [
       {
@@ -240,6 +249,7 @@ export function CarDataProvider({ children }: { children: React.ReactNode }) {
       symptomRecords: symptoms,
       health,
       completenessIndex,
+      appUser,
       applyQuickAdd,
       addFuelExpense,
       addDocument,
@@ -247,8 +257,9 @@ export function CarDataProvider({ children }: { children: React.ReactNode }) {
       updateMileage,
       addSymptomRecord,
       addReminderCustom,
+      updateAppUser,
     }),
-    [vehicle, trackers, maintenanceEvents, expenses, reminders, documents, passportEvents, symptoms, health, completenessIndex]
+    [vehicle, trackers, maintenanceEvents, expenses, reminders, documents, passportEvents, symptoms, health, completenessIndex, appUser]
   );
 
   return <CarDataContext.Provider value={value}>{children}</CarDataContext.Provider>;
